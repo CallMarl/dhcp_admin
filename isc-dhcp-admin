@@ -1,0 +1,111 @@
+#!/bin/bash
+source "$(dirname $(realpath ${BASH_SOURCE[0]}))/_env.sh"
+
+source "$SC_LIB/host_db.sh"
+source "$SC_LIB/lease_db.sh"
+source "$SC_LIB/lease.sh"
+source "$SC_LIB/omapi.sh"
+source "$SC_LIB/tmp_db.sh"
+source "$SC_LIB/utile.sh"
+
+display_usage()
+{
+	echo "Usage $0: [commande] [option]"
+	echo "- init : commande obligatoire à lors du première usage de la commande"
+	echo "- connect : commande qui permet de se connecter à un hote statiquement connecté"
+	echo "- know : commande qui permet d'attribué statiquement un hôte connue"
+	echo "- unknow : commande qui permet d'attribué dynamiquement un hôte inconnue"
+	echo "- rm : commande qui permet de supprimé un hôte statique"
+	echo "- show : affiche l'ensemble des table de isc-dhcp-admin, dhcp-lease-list peux servir de complément"
+}
+
+uninit()
+{
+	rm $SC_ROOT/server
+	rm $SC_ROOT/port
+	rm $SC_ROOT/key_name
+	rm $SC_ROOT/key
+}
+
+init()
+{
+	lease_init_db
+	if [ $# -ne 4 ]
+	then
+		echo "Usage $0: [server] [port] [key_name] [omapi]"
+		echo "  - server ip : ip du server dhcp"
+		echo "  - port : port omapi d'écoute"
+		echo "  - key name : nom de clef indiqué dans le fichier dhcpd.conf"
+		echo "  - key : hash secret indiqué dans le fichier dhcpd.conf"
+	else
+		echo $1 > $SC_ROOT/server
+		echo $2 > $SC_ROOT/port
+		echo $3 > $SC_ROOT/key_name
+		echo $4 > $SC_ROOT/key
+		echo "Soyez sûre que les paramettre entrées sont correct, il existe pour le moment"
+		echo "pas de moyen de vérifié si les paramettre sont correct"
+	fi
+}
+
+show()
+{
+	echo "HOST LIST : "
+	cat $SC_HOST_FILE
+	echo ""
+	echo "TMP LIST : "
+	cat $SC_TMP_FILE
+	echo ""
+	echo "LEASE LIST : "
+	cat $SC_LEASE_FILE
+	echo ""
+}
+
+if [ -f $SC_ROOT/server ]
+then
+	SC_SERVER=`cat $SC_ROOT/server`
+fi
+
+if [ -f $SC_ROOT/port ]
+then
+	SC_PORT=`cat $SC_ROOT/port`
+fi
+
+if [ -f $SC_ROOT/key_name ]
+then
+	SC_KEY_NAME=`cat $SC_ROOT/key_name`
+fi
+
+if [ -f $SC_ROOT/key ]
+then
+	SC_KEY=`cat $SC_ROOT/key`
+fi
+
+case "$1" in
+	init)
+		init $2 $3 $4 $5
+		;;
+	connect)
+		source $SC_TOOLS/connect.sh $@
+		;;
+	add)
+		source $SC_TOOLS/add.sh $@
+		;;
+	uninit)
+		uninit
+		;;
+	rm)
+		source $SC_TOOLS/rm.sh $@
+		;;
+	show)
+		show
+		;;
+	wait)
+		source $SC_TOOLS/wait.sh $@
+		;;
+	*)
+		display_usage
+		exit 0
+		;;
+esac
+
+exit 0
