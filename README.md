@@ -43,7 +43,6 @@ During first use run `dhcp-admin init` to setup OMAPI connection.
 comming soon
 
 ## Misc
----
 ###### Files .db
 
 The ``* .db`` files are utility files that allow you to keep a
@@ -58,6 +57,6 @@ __|!|__ Configured host do not significate active hote. The activation duration 
 which has not yet been converted to static. \
 (Static host is configured but the new lease is not active)
 ---
-### Line up
+###### Line up
 
 In folder exemple there is some files named `line up` those files are exemples about how it is possible to use function to create small process exection. Lot of comment are inside they explain each row.
