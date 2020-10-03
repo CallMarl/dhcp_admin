@@ -10,13 +10,13 @@ source "$SC_LIB/utile.sh"
 
 display_usage()
 {
-	echo "Usage $0: [commande] [option]"
-	echo "- init : commande obligatoire à lors du première usage de la commande"
-	echo "- connect : commande qui permet de se connecter à un hote statiquement connecté"
-	echo "- know : commande qui permet d'attribué statiquement un hôte connue"
-	echo "- unknow : commande qui permet d'attribué dynamiquement un hôte inconnue"
-	echo "- rm : commande qui permet de supprimé un hôte statique"
-	echo "- show : affiche l'ensemble des table de isc-dhcp-admin, dhcp-lease-list peux servir de complément"
+	echo "Usage $0: [cmd] [option]"
+	echo "	init     setup dhcp-admin environnement."
+	echo "	show     display content of .db files."
+	echo "	add      enable you to give static ip to host."
+	echo "	wait     enable you to wait for host befor give him static ip."
+	echo "	rm       enable you to remove static host (not implemented)."
+	echo "	connect  enable you to connect to the static host (not implemented)."
 }
 
 uninit()
@@ -33,17 +33,17 @@ init()
 	if [ $# -ne 4 ]
 	then
 		echo "Usage $0: [server] [port] [key_name] [omapi]"
-		echo "  - server ip : ip du server dhcp"
-		echo "  - port : port omapi d'écoute"
-		echo "  - key name : nom de clef indiqué dans le fichier dhcpd.conf"
-		echo "  - key : hash secret indiqué dans le fichier dhcpd.conf"
+		echo "	server :   ip of dhcp server."
+		echo "	port :     omapi port of dhcp server."
+		echo "	key name : omapi key name (same as dhcpd.conf)."
+		echo "	key :      omapi hash (same as dhcpd.conf)."
 	else
 		echo $1 > $SC_ROOT/server
 		echo $2 > $SC_ROOT/port
 		echo $3 > $SC_ROOT/key_name
 		echo $4 > $SC_ROOT/key
-		echo "Soyez sûre que les paramettre entrées sont correct, il existe pour le moment"
-		echo "pas de moyen de vérifié si les paramettre sont correct"
+		echo "Make sur parametters are correct."
+		echo "dhcp-admin doesn't implement any control."
 	fi
 }
 

@@ -1,14 +1,14 @@
-# Fichier de base d'une line up.
+# Base file for lineup
 
 source "$(dirname $BASH_SOURCE[0])/../_env.sh"
 
 display_usage()
 {
-    echo "$0 : [server ip][port][key name][key]"
-    echo "  - server ip : ip du server dhcp"
-    echo "  - port : port omapi d'écoute"
-    echo "  - key name : nom de clef indiqué dans le fichier dhcpd.conf"
-    echo "  - key : hash secret indiqué dans le fichier dhcpd.conf"
+	echo "Usage $0: [server] [port] [key_name] [omapi]"
+	echo "	server :   ip of dhcp server."
+	echo "	port :     omapi port of dhcp server."
+	echo "	key name : omapi key name (same as dhcpd.conf)."
+	echo "	key :      omapi hash (same as dhcpd.conf)."
 }
 
 if [ $# -ne 4 ]

@@ -2,11 +2,11 @@ source "$(dirname $BASH_SOURCE[0])/../_env.sh"
 
 display_usage()
 {
-	echo "isc-dhcp-admin add [-ku]"
+	echo "Usage dhcp-admin add : [-ku]"
 	echo "	-k [ hostname | mac addr | lease ip ][ ip ]"
-	echo "	   ajouter une machine connue à la liste d'hôtes statique"
+	echo "	   set statique ip to know host"
 	echo "	-u [ nombre d\'hôte ][ liste ip ]: "
-	echo "	   ajouter des machine incconue à la liste d'hôtes statique"
+	echo "	   will attribut static ip for random machine."
 }
 
 know()
@@ -20,21 +20,21 @@ know()
 	lease=($(lease_db_get_lease $1))
 	if [ ${#lease[@]} -eq 0 ]
 	then
-		echo "Il n'y à pas de bails disponible"
+		echo "Machine not found"
 		exit 0
 	fi
 	lease_tmp=($(lease_db_get_lease $2))
 	if [ ${#lease_tmp[@]} -ne 0 ]
 	then
-		echo "Il existe déjà un bail avec cette IP"
-		echo "lease: ${lease_tmp[@]}"
+		echo "There is already a host with this ip"
+		echo "host: ${lease_tmp[@]}"
 		exit 0
 	fi
 	host_tmp=($(host_db_get_host $2))
 	if [ ${#host_tmp[@]} -ne 0 ]
 	then
-		echo "Il existe déjà un hôte avec cette IP"
-		echo "hôte: ${host_tmp[@]}"
+		echo "There is already a host with this ip."
+		echo "host: ${host_tmp[@]}"
 		exit 0
 	fi
 	host_db_add ${lease[0]} $2 ${lease[2]}
@@ -51,15 +51,15 @@ unknow()
 	lease_tmp=($(lease_db_get_lease $1))
 	if [ ${#lease_tmp[@]} -ne 0 ]
 	then
-		echo "Il existe déjà un bail avec cette IP"
+		echo "There is already a lease with this ip."
 		echo "lease: ${lease_tmp[@]}"
 		exit 0
 	fi
 	host_tmp=($(host_db_get_host $1))
 	if [ ${#host_tmp[@]} -ne 0 ]
 	then
-		echo "Il existe déjà un hôte avec cette IP"
-		echo "hôte: ${host_tmp[@]}"
+		echo "There is alredy a host with this ip."
+		echo "host: ${host_tmp[@]}"
 		exit 0
 	fi
 

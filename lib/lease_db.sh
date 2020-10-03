@@ -7,7 +7,6 @@ lease_db_get_lease()
 }
 
 # $# 0
-# Fonction qui retourne la liste des address MAC des baux valide existant
 lease_db_get_mac()
 {
     list=(`cat $SC_LEASE_FILE | cut -d" " -f1 | sed -e "s/\n/ /g"`)

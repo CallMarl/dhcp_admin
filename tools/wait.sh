@@ -1,17 +1,15 @@
 display_usage()
 {
-	echo "isc-dhcp-admin wait [-lp]"
-	echo "	-l [ host_number ]"
-	echo "	   attends tant que le nombre de bails disponibles est inférieur à celui indiqué"
+	echo "dhcp-admin wait [-lp]"
+	echo "	-l [ host_number ]([max_time])"
+	echo "	   wait while the number of host is under the amount indicate."
 	echo "	-p [ hostname | mac addr | host ip ]([ max_time ])"
-	echo "	   attends jusqu'à ce que l'hôte reponds sur sont ip"
+	echo "	   wait while host didn't give response on it new ip."
 }
 
 wait_for_lease()
 {
 	hostname_list=($(lease_get_hostname))
-	# si $1 est set alors on attends jusqu'à ce que le nombre de lease requis
-	# soit respecté.
 	if [ -z $1 ]
 	then
 		display_usage
@@ -21,7 +19,8 @@ wait_for_lease()
 	timer=0
 	while [ $(lease_db_count) -lt $1 ]
 	do
-		echo "Warn: Cette commande dépend du nombre d'hôte qui peuvent réelement se connecté (inf)."
+		echo "Warn: This command wait while the number of host is $1 (could be inf)."
+		echo "      available host $(lease_db_count)"
 		lease_init_db
 		sleep 10;
 		if [ ! -z $2 ]
@@ -29,8 +28,8 @@ wait_for_lease()
 			((timer+=10))
 			if [ timer -lt $2 ]
 			then
-				echo "Warn: Le temps que vous avez indiqué s'est écoulé."
-				echo "il se peux que le nombre d'hote que vous avez indiqué n'est été ateint"
+				echo "Warn: The max time is over."
+				echo "      The number of available host are $(lease_db_count)"
 				break;
 			fi
 		fi
@@ -39,7 +38,7 @@ wait_for_lease()
 
 wait_for_response()
 {
-	echo "Pas encore implémenté"
+	echo "(Not implemented)"
 }
 
 case "$2" in

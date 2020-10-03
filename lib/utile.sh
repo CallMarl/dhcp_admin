@@ -13,12 +13,12 @@ check_env()
 {
 	if [ ! -f $SC_ROOT/server ] || [ ! -f $SC_ROOT/port ] || [ ! -f $SC_ROOT/key_name ]|| [ ! -f $SC_ROOT/key ]
 	then
-		echo "Les variables d'environnement sont manquantes veuillez les initialiser."
+		echo "Environnement vars are missing user dhcp-admin init to set them."
 		exit 0
 	fi
 	if [ -z "$SC_SERVER" ] || [ -z "$SC_PORT" ] || [ -z "$SC_KEY_NAME" ] || [ -z "$SC_KEY" ]
 	then
-		echo "Les variables d'environnement sont manquantes veuillez les initialiser."
+		echo "Environnement vars are missing user dhcp-admin init to set them."
 		exit 0
 	fi
 }

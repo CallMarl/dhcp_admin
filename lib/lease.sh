@@ -1,7 +1,6 @@
 source "$(dirname $BASH_SOURCE[0])/../_env.sh"
 
 # $# 0
-# Fonction qui retourne la liste des address MAC des baux valide existant
 lease_get_mac()
 {
 	list=(`dhcp-lease-list --parsable 2>/dev/null | cut -d" " -f2 | sed -e "s/\n/ /g"`)

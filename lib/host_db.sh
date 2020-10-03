@@ -8,7 +8,6 @@ host_db_get_host()
 }
 
 # $# 0
-# Fonction qui retourne la liste des address MAC des baux valide existant
 host_db_get_mac()
 {
     list=(`cat $SC_HOST_FILE | cut -d" " -f1 | sed -e "s/\n/ /g"`)
@@ -37,9 +36,9 @@ host_db_count()
 }
 
 # $# 3
-# $1 addresse MAC
-# $2 addresse ip
-# $3 nom d'hote
+# $1 MAC address
+# $2 ip address
+# $3 host name
 host_db_add()
 {
     if [ $# -eq 3 ]
@@ -50,7 +49,7 @@ host_db_add()
         echo "${lease[0]} ${lease[1]} ${lease[2]} " >> $SC_TMP_FILE
         sed -i "/$1/d" $SC_LEASE_FILE
     else
-	echo "$0 : erreur sur les arguments : [ $@ ], 3 argument sont attendu"
+	echo "$0 : error about args : [ $@ ], 3 args are expected."
 	exit 0
     fi
 }

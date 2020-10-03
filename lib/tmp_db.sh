@@ -7,7 +7,6 @@ tmp_db_get_tmp()
 }
 
 # $# 0
-# Fonction qui retourne la liste des address MAC des baux valide existant
 tmp_db_get_mac()
 {
     list=(`cat $SC_TMP_FILE | cut -d" " -f1 | sed -e "s/\n/ /g"`)
