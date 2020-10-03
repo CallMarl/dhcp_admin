@@ -1,26 +1,63 @@
-# Outil d'administration DHCP
+# DHCP ADMIN
 
-Cette outil permet d'administrer les bails et les hotes DHCP dynamiquement pour
-le serveur isc-dhcp-serveur. L'intégralité de l'outil est basé sur la commande
-dhcp-lease-list.
+This tool allows you to dynamically manage DHCP leases and hosts for
+the [isc-dhcp-server](https://github.com/isc-projects/dhcp) server. This tools is based on `dhcp-lease-list` command line.
 
-Il implement notament des consigne pour le protocole OMAPI, et est restraint par
-les restriction imposer par le serveur isc-dhcp-server.
+This tool also use OMAPI protocole to dynamically inetract with the isc-dhcp-server.
 
-### Les fichier .db
+## Install
 
-les fichier ``*.db`` sont des fichier utilitaire qui permette de garder une
-tace sur les hotes, les baux sans avoir à parser le fichier ``/var/lib/dhcp3/dhcpd.leases``.
-En effet l'outil est basé uniquement sur la commande isc-dhcp-server.
+Clone this repository in `/usr/local/src` then run from the folder `install.sh`
+script. You can now run `dhcp-admin`. Help message should appear.
 
-- le fichier host.db list l'ensemble des hotes configurer.
-/!\\ un hotes configurer ne signifie pas que cette hotes est encore actifs.
-(cf: restriction de isc-dhcp-server)
+If command not run :
+* Make sur your have the admin privileges.
+* Make sur `/usr/local/sbin` is in your environnement $PATH variable.  
 
-- le fichier lease.db list l'ensemble des baux actifs. A la différence de
-isc-dhcp-server la liste ne référence pas les baux qui ont été exploité pour
-créer un hote statique.
+#### Requirement
 
-- le fichier tmp.db list l'ensemble des ip et address mac des ancien bail
-qui on été converti en host static. Ceci est obligatoire car le serveur
-isc-dhcp ne supporte pas la feature FORCERENEW comme indiqué dans la RFC3203
+To work this tools need OMAPI service activate on your isc-dhcp-server. To activate
+it insert those rules in the `/etc/dhcp/dhcpd.conf` file :
+
+```
+# List of available OMAPI key
+# First key :
+key my_key_name {
+	algorithm hmac-md5;
+	secret 0a0c4a3979592d1561582cf98a912c8f;
+}
+
+# Setup OMAPI servie
+omapi-port 5000;            # Wich port OMAPI will bind.
+omapi-key my_key_name;      # Key used by OMAPI service.
+```
+
+To generate key dhcp-admin give you à little script named `omapi_keygen`.
+
+### Configure
+
+During first use run `dhcp-admin init` to setup OMAPI connection.
+
+## Usage
+
+comming soon
+
+## Misc
+---
+###### Files .db
+
+The ``* .db`` files are utility files that allow you to keep a
+trace on hosts and leases without having to analyze the file ``/var/lib/dhcp3/dhcpd.leases``.
+
+- The `host.db` file list all the configured host. \
+__|!|__ Configured host do not significate active hote. The activation duration will depend of the previous lease expiration date.
+
+- The `lease.db` file list all the actifs lease without very newest static configuration.
+
+- the `tmp.db` file lists all the ip and mac addresses of the old lease
+which has not yet been converted to static. \
+(Static host is configured but the new lease is not active)
+---
+### Line up
+
+In folder exemple there is some files named `line up` those files are exemples about how it is possible to use function to create small process exection. Lot of comment are inside they explain each row.
