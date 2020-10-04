@@ -47,7 +47,7 @@ hmac_md5()
     echo "$magic_hash" | openssl dgst -md5 \
         -mac hmac \
         -macopt key:$private_key | cut -d " " -f 2 > $public_key_file
-    echo "creating ./key and ./key.pub file"
+    echo "creating ./$public_key_file and ./$private_key_file file"
     cat "$public_key_file"
 }
 
